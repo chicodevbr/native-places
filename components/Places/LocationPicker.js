@@ -1,36 +1,62 @@
+import { useState, useEffect } from 'react';
 import { StyleSheet, View, Alert, Image, Text } from 'react-native';
 
 import OutlinedButton from '../UI/OutlinedButton';
-import { GlobalStyles } from '../../constants/styles';
+import { Colors } from '../../constants/colors';
+
 import {
   getCurrentPositionAsync,
   useForegroundPermissions,
   PermissionStatus,
 } from 'expo-location';
-import { useState } from 'react';
+import {
+  useNavigation,
+  useRoute,
+  useIsFocused,
+} from '@react-navigation/native';
 import { getMapPreview } from '../UI/location';
-import { useNavigation } from '@react-navigation/native';
 
-const LocationPicker = () => {
+const LocationPicker = ({ onPickLocation }) => {
   const [pickedLocation, setPickedLocation] = useState();
-  const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
-  const [locationPermission, requestPermission] = useForegroundPermissions();
+  const navigation = useNavigation();
+  const route = useRoute();
+
+  const [locationPermissionInformation, requestPermission] =
+    useForegroundPermissions();
+
+  useEffect(() => {
+    if (isFocused && route.params) {
+      const mapPickedLocation = {
+        lat: route.params.pickedLat,
+        lng: route.params.pickedLng,
+      };
+      setPickedLocation(mapPickedLocation);
+    }
+  }, [route, isFocused]);
+
+  useEffect(() => {
+    onPickLocation(pickedLocation);
+  }, [pickedLocation, onPickLocation]);
 
   async function verifyPermissions() {
-    if (locationPermission.status === PermissionStatus.UNDETERMINED) {
-      const response = await requestPermission();
+    if (
+      locationPermissionInformation.status === PermissionStatus.UNDETERMINED
+    ) {
+      const permissionResponse = await requestPermission();
 
-      return response.granted;
+      return permissionResponse.granted;
     }
 
-    if (locationPermission.status === PermissionStatus.DENIED) {
+    if (locationPermissionInformation.status === PermissionStatus.DENIED) {
       Alert.alert(
-        'Insufficient Permissions',
-        'You need to grant location permission to use this app.'
+        'Insufficient Permissions!',
+        'You need to grant location permissions to use this app.'
       );
       return false;
     }
+
     return true;
   }
 
@@ -64,6 +90,7 @@ const LocationPicker = () => {
       />
     );
   }
+
   return (
     <View>
       <View style={styles.mapPreview}>{locationPreview}</View>
@@ -88,7 +115,7 @@ const styles = StyleSheet.create({
     marginVertical: 8,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: GlobalStyles.colors.primary100,
+    backgroundColor: Colors.primary100,
     borderRadius: 4,
     overflow: 'hidden',
   },
@@ -100,5 +127,6 @@ const styles = StyleSheet.create({
   image: {
     width: '100%',
     height: '100%',
+    // borderRadius: 4
   },
 });
