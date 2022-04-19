@@ -1,9 +1,10 @@
-import { ScrollView, View, Text, TextInput, StyleSheet } from 'react-native';
-import { useState, useCallback } from 'react';
-import { GlobalStyles } from '../../constants/styles';
+import { useCallback, useState } from 'react';
+import { ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+
+import { Colors } from '../../constants/colors';
+import Button from '../UI/Button';
 import ImagePicker from './ImagePicker';
 import LocationPicker from './LocationPicker';
-import Button from '../UI/Button';
 
 function PlaceForm() {
   const [enteredTitle, setEnteredTitle] = useState('');
@@ -38,7 +39,7 @@ function PlaceForm() {
           value={enteredTitle}
         />
       </View>
-      <ImagePicker onTakenImage={takeImageHandler} />
+      <ImagePicker onTakeImage={takeImageHandler} />
       <LocationPicker onPickLocation={pickLocationHandler} />
       <Button onPress={savePlaceHandler}>Add Place</Button>
     </ScrollView>
@@ -55,15 +56,15 @@ const styles = StyleSheet.create({
   label: {
     fontWeight: 'bold',
     marginBottom: 4,
-    color: GlobalStyles.colors.primary500,
+    color: Colors.primary500,
   },
   input: {
     marginVertical: 8,
     paddingHorizontal: 4,
     paddingVertical: 8,
     fontSize: 16,
-    borderBottomColor: GlobalStyles.colors.primary700,
+    borderBottomColor: Colors.primary700,
     borderBottomWidth: 2,
-    backgroundColor: GlobalStyles.colors.primary100,
+    backgroundColor: Colors.primary100,
   },
 });

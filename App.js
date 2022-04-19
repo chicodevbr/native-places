@@ -5,7 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import AllPlaces from './screens/AllPlaces';
 import AddPlace from './screens/AddPlace';
 import IconButton from './components/UI/IconButton';
-import { GlobalStyles } from './constants/styles';
+import { Colors } from './constants/colors';
 import Map from './screens/Map';
 
 const Stack = createNativeStackNavigator();
@@ -17,9 +17,9 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{
-            headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-            headerTintColor: GlobalStyles.colors.gray700,
-            contentStyle: { backgroundColor: GlobalStyles.colors.gray700 },
+            headerStyle: { backgroundColor: Colors.primary500 },
+            headerTintColor: Colors.gray700,
+            contentStyle: { backgroundColor: Colors.gray700 },
           }}
         >
           <Stack.Screen

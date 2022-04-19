@@ -1,5 +1,6 @@
-import { FlatList, View, Text, StyleSheet } from 'react-native';
-import { GlobalStyles } from '../../constants/styles';
+import { FlatList, StyleSheet, Text, View } from 'react-native';
+
+import { Colors } from '../../constants/colors';
 import PlaceItem from './PlaceItem';
 
 function PlacesList({ places }) {
@@ -7,11 +8,12 @@ function PlacesList({ places }) {
     return (
       <View style={styles.fallbackContainer}>
         <Text style={styles.fallbackText}>
-          No places added yet - start adding some.
+          No places added yet - start adding some!
         </Text>
       </View>
     );
   }
+
   return (
     <FlatList
       data={places}
@@ -31,6 +33,6 @@ const styles = StyleSheet.create({
   },
   fallbackText: {
     fontSize: 16,
-    color: GlobalStyles.colors.primary200,
+    color: Colors.primary200
   },
 });
